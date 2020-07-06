@@ -1,5 +1,5 @@
 import {initializeBlock, useBase,  useRecordById, useRecords, Loader, Button, Box,   useLoadable,
-    useSettingsButton, Heading, 
+    Heading, 
     useWatchable,  Text, TextButton} from '@airtable/blocks/ui';
 import React, {Fragment, useState, useCallback, useEffect} from 'react';
 import {cursor} from '@airtable/blocks';
@@ -56,7 +56,7 @@ const MAX_RECORDS_PER_UPDATE = 50;
 const API_ENDPOINT = 'https://en.wikipedia.org/api/rest_v1/page/summary';
 const  WIKTIONARY_API = 'https://en.wiktionary.org/w/api.php?action=query&titles=test'
 
-function WikipediaEnrichmentBlock() {
+function Wordify() {
     const base = useBase();
    
     const table = base.getTableByName(TABLE_NAME);
@@ -136,7 +136,7 @@ function WikipediaEnrichmentBlock() {
     useEffect(() => {
         // Display the settings form if the settings aren't valid.
         if (!isValid && !isSettingsOpen) {
-            setIsSettingsOpen(true);
+            // setIsSettingsOpen(true);
         }
     }, [isValid, isSettingsOpen]);
 
@@ -179,7 +179,8 @@ function WikipediaEnrichmentBlock() {
                      
                     <Box>
                         {isSettingsOpen ? (
-                            <SettingsForm setIsSettingsOpen={setIsSettingsOpen} />
+                            // <SettingsForm setIsSettingsOpen={setIsSettingsOpen} />
+                            null
                         ) : (
                             <RecordPreviewWithDialog
                                 activeTable={activeTable}
@@ -310,7 +311,7 @@ function RecordPreview({
         return (
             <Fragment>
                 <Text paddingX={3}>Switch to the “{table.name}” table to see results.</Text>
-                <TextButton size="small" marginTop={3} onClick={() => setIsSettingsOpen(true)}>
+                <TextButton size="small" marginTop={3} >
                     Settings
                 </TextButton>
             </Fragment>
@@ -566,4 +567,4 @@ function delayAsync(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-initializeBlock(() => <WikipediaEnrichmentBlock />);
+initializeBlock(() => <Wordify />);

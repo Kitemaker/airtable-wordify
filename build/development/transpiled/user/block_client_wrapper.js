@@ -25,7 +25,7 @@ window['_airtableRunBlock'] = function runBlock() {
     // Requiring the entry point file runs user code. Be sure to do any setup
     // above this line.
     var BlockWrapperComponent = window['_airtableBlockSdk'].__BlockWrapperComponent;
-    var EntryComponent = require("C:\\Users\\sajaved\\Documents\\GitHub\\wordify\\build\\development\\transpiled\\user\\frontend\\index.js").default;
+    var EntryComponent = require("C:\\Users\\sajaved\\Documents\\GitHub\\airtable-wordify\\build\\development\\transpiled\\user\\frontend\\index.js").default;
 
     var isEntryReactComponent = EntryComponent && (
         EntryComponent.prototype instanceof React.Component ||

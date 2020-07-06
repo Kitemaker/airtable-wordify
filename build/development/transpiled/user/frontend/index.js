@@ -79,7 +79,7 @@ var MAX_RECORDS_PER_UPDATE = 50; // The API endpoint we're going to hit. For mor
 var API_ENDPOINT = 'https://en.wikipedia.org/api/rest_v1/page/summary';
 var WIKTIONARY_API = 'https://en.wiktionary.org/w/api.php?action=query&titles=test';
 
-function WikipediaEnrichmentBlock() {
+function Wordify() {
   var _table$checkPermissio;
 
   var base = (0, _ui.useBase)();
@@ -169,8 +169,7 @@ function WikipediaEnrichmentBlock() {
   var activeTable = base.getTableByIdIfExists(_blocks.cursor.activeTableId);
   (0, _react.useEffect)(function () {
     // Display the settings form if the settings aren't valid.
-    if (!isValid && !isSettingsOpen) {
-      setIsSettingsOpen(true);
+    if (!isValid && !isSettingsOpen) {// setIsSettingsOpen(true);
     }
   }, [isValid, isSettingsOpen]); // activeTable is briefly null when switching to a newly created table.
 
@@ -404,10 +403,7 @@ function RecordPreview(_ref2) {
       paddingX: 3
     }, "Switch to the \u201C", table.name, "\u201D table to see results."), /*#__PURE__*/_react.default.createElement(_ui.TextButton, {
       size: "small",
-      marginTop: 3,
-      onClick: function onClick() {
-        return setIsSettingsOpen(true);
-      }
+      marginTop: 3
     }, "Settings"));
   } else if ( // activeViewId is briefly null when switching views
   selectedRecord === null && (_blocks.cursor.activeViewId === null || table.getViewById(_blocks.cursor.activeViewId).type !== _models.ViewType.GRID)) {
@@ -879,5 +875,5 @@ function delayAsync(ms) {
 }
 
 (0, _ui.initializeBlock)(function () {
-  return /*#__PURE__*/_react.default.createElement(WikipediaEnrichmentBlock, null);
+  return /*#__PURE__*/_react.default.createElement(Wordify, null);
 });

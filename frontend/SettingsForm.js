@@ -1,68 +1,103 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
-    useGlobalConfig,
     Box,
-    Button,
-    FieldPickerSynced,
-    FormField,
-    Heading,
-    Switch,
-    TablePickerSynced,
     Text,
+    Heading,
+    Button,
+    FormField,
+    ViewPickerSynced,
+    FieldPickerSynced,
+    TablePickerSynced,
+    useSettingsButton,
 } from '@airtable/blocks/ui';
+import {FieldType} from '@airtable/blocks/models';
 
-import {useSettings, ConfigKeys, allowedUrlFieldTypes} from './settings';
+import {useSettings, ConfigKeys} from './settings';
+import FullScreenBox from './FullScreenBox';
 
-function SettingsForm({setIsSettingsOpen}) {
-    const globalConfig = useGlobalConfig();
-    const {
-        isValid,
-        message,
-        settings: {isEnforced, urlTable},
-    } = useSettings();
-
+/**
+ * The settings form allows the user to configure the right table, view and fields for the game.
+ */
+export default function SettingsForm({onDone}) {
+    // Use the `useSettings` hook to access the settings, and re-render whenever something changes.
+    const {isValid, settings, message} = useSettings();
+    console.log('settings = ', settings);
+    useSettingsButton(onDone);
     return (
-        <Box
-            position="absolute"
-            top={0}
-            bottom={0}
-            left={0}
-            right={0}
-            display="flex"
-            flexDirection="column"
-        >
+        <FullScreenBox display="flex" flexDirection="column">
             <Box flex="auto" padding={4} paddingBottom={2}>
                 <Heading marginBottom={3}>Settings</Heading>
-                <FormField label="">
-                    <Switch
-                        aria-label="When enabled, the block will only show previews for the specified table and field, regardless of what field is selected."
-                        value={isEnforced}
-                        onChange={value => {
-                            globalConfig.setAsync(ConfigKeys.IS_ENFORCED, value);
-                        }}
-                        label="Use a specific field for previews"
-                    />
-                    <Text paddingY={1} textColor="light">
-                        {isEnforced
-                            ? 'The block will show previews for the selected record in grid view if the table has a supported URL in the specified field.'
-                            : 'The block will show previews if the selected cell in grid view has a supported URL.'}
-                    </Text>
+                <FormField label="Table">
+                    <TablePickerSynced globalConfigKey={ConfigKeys.TABLE_ID} />
                 </FormField>
-                {isEnforced && (
-                    <FormField label="Preview table">
-                        <TablePickerSynced globalConfigKey={ConfigKeys.URL_TABLE_ID} />
-                    </FormField>
-                )}
-                {isEnforced && urlTable && (
-                    <FormField label="Preview field">
-                        <FieldPickerSynced
-                            table={urlTable}
-                            globalConfigKey={ConfigKeys.URL_FIELD_ID}
-                            allowedTypes={allowedUrlFieldTypes}
+                {settings.table && (
+                    <FormField
+                        label="View"
+                        description="Only the records visible in this view will be used in the game."
+                    >
+                        <ViewPickerSynced
+                            table={settings.table}
+                            globalConfigKey={ConfigKeys.VIEW_ID}
                         />
                     </FormField>
                 )}
+                     {settings.table && (
+                    <FormField label="Question field">
+                        <FieldPickerSynced
+                            table={settings.table}
+                            globalConfigKey={ConfigKeys.QUESTION_FIELD_ID}
+                            allowedTypes={[FieldType.SINGLE_LINE_TEXT, FieldType.MULTILINE_TEXT]}
+                        />
+                    </FormField>
+                )}
+                {settings.table && (
+                    <FormField label="Option-1 field">
+                        <FieldPickerSynced
+                            table={settings.table}
+                            globalConfigKey={ConfigKeys.OPT1_FIELD_ID}
+                            allowedTypes={[FieldType.SINGLE_LINE_TEXT, FieldType.MULTILINE_TEXT]}
+                        />
+                    </FormField>
+                )}
+                   {settings.table && (
+                    <FormField label="Option-2 field">
+                        <FieldPickerSynced
+                            table={settings.table}
+                            globalConfigKey={ConfigKeys.OPT2_FIELD_ID}
+                            allowedTypes={[FieldType.SINGLE_LINE_TEXT, FieldType.MULTILINE_TEXT]}
+                        />
+                    </FormField>
+                )}
+                   {settings.table && (
+                    <FormField label="Option-3 field">
+                        <FieldPickerSynced
+                            table={settings.table}
+                            globalConfigKey={ConfigKeys.OPT3_FIELD_ID}
+                            allowedTypes={[FieldType.SINGLE_LINE_TEXT, FieldType.MULTILINE_TEXT]}
+                        />
+                    </FormField>
+                )}
+                   {settings.table && (
+                    <FormField label="Option-4 field">
+                        <FieldPickerSynced
+                            table={settings.table}
+                            globalConfigKey={ConfigKeys.OPT4_FIELD_ID}
+                            allowedTypes={[FieldType.SINGLE_LINE_TEXT, FieldType.MULTILINE_TEXT]}
+                        />
+                    </FormField>
+                )}
+                   {settings.table && (
+                    <FormField label="Answer field">
+                        <FieldPickerSynced
+                            table={settings.table}
+                            globalConfigKey={ConfigKeys.ANS_FIELD_ID}
+                            allowedTypes={[FieldType.NUMBER]}
+                        />
+                    </FormField>
+                )}
+                
+           
             </Box>
             <Box display="flex" flex="none" padding={3} borderTop="thick">
                 <Box
@@ -74,21 +109,14 @@ function SettingsForm({setIsSettingsOpen}) {
                 >
                     <Text textColor="light">{message}</Text>
                 </Box>
-                <Button
-                    disabled={!isValid}
-                    size="large"
-                    variant="primary"
-                    onClick={() => setIsSettingsOpen(false)}
-                >
+                <Button onClick={onDone} disabled={!isValid} size="large" variant="primary">
                     Done
                 </Button>
             </Box>
-        </Box>
+        </FullScreenBox>
     );
 }
 
 SettingsForm.propTypes = {
-    setIsSettingsOpen: PropTypes.func.isRequired,
+    onDone: PropTypes.func.isRequired,
 };
-
-export default SettingsForm;
